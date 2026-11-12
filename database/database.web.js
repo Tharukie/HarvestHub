@@ -1,61 +1,49 @@
 
 /*
-  HarvestHub - Web Database
-  Offline Storage using localStorage
-  Modules: Crops and Farm Fields
+  HarvestHub Web Database
+  Storage: Browser localStorage
+  Modules: Crops, Fields, Activities
 */
-
-// =====================================
-// STORAGE KEYS
-// =====================================
 
 const CROPS_STORAGE_KEY = 'harvesthub_crops';
 const FIELDS_STORAGE_KEY = 'harvesthub_fields';
+const ACTIVITIES_STORAGE_KEY = 'harvesthub_activities';
 
-// =====================================
-// INITIALIZE DATABASE
-// =====================================
-
+// Initialize storage
 export function initializeDatabase() {
-  if (!localStorage.getItem(CROPS_STORAGE_KEY)) {
-    localStorage.setItem(
-      CROPS_STORAGE_KEY,
-      JSON.stringify([])
-    );
-  }
+  const keys = [
+    CROPS_STORAGE_KEY,
+    FIELDS_STORAGE_KEY,
+    ACTIVITIES_STORAGE_KEY,
+  ];
 
-  if (!localStorage.getItem(FIELDS_STORAGE_KEY)) {
-    localStorage.setItem(
-      FIELDS_STORAGE_KEY,
-      JSON.stringify([])
-    );
-  }
+  keys.forEach((key) => {
+    if (localStorage.getItem(key) === null) {
+      localStorage.setItem(key, JSON.stringify([]));
+    }
+  });
 }
 
 // =====================================
-// CROP MANAGEMENT - CRUD
+// CROPS MANAGEMENT
 // =====================================
 
-// READ - Get all crops
 export function getAllCrops() {
   return JSON.parse(
     localStorage.getItem(CROPS_STORAGE_KEY) || '[]'
   );
 }
 
-// CREATE - Add new crop
 export function addCrop(name, type, plantingDate, quantity) {
   const crops = getAllCrops();
 
-  const newCrop = {
+  crops.push({
     id: Date.now(),
     name,
     type,
     plantingDate,
     quantity,
-  };
-
-  crops.push(newCrop);
+  });
 
   localStorage.setItem(
     CROPS_STORAGE_KEY,
@@ -63,66 +51,50 @@ export function addCrop(name, type, plantingDate, quantity) {
   );
 }
 
-// UPDATE - Edit crop
 export function updateCrop(id, name, type, plantingDate, quantity) {
-  const crops = getAllCrops();
-
-  const updatedCrops = crops.map((crop) =>
+  const updated = getAllCrops().map((crop) =>
     crop.id === id
-      ? {
-          ...crop,
-          name,
-          type,
-          plantingDate,
-          quantity,
-        }
+      ? { ...crop, name, type, plantingDate, quantity }
       : crop
   );
 
   localStorage.setItem(
     CROPS_STORAGE_KEY,
-    JSON.stringify(updatedCrops)
+    JSON.stringify(updated)
   );
 }
 
-// DELETE - Remove crop
 export function deleteCrop(id) {
-  const crops = getAllCrops();
-
-  const updatedCrops = crops.filter(
+  const updated = getAllCrops().filter(
     (crop) => crop.id !== id
   );
 
   localStorage.setItem(
     CROPS_STORAGE_KEY,
-    JSON.stringify(updatedCrops)
+    JSON.stringify(updated)
   );
 }
 
 // =====================================
-// FARM FIELDS MANAGEMENT - CRUD
+// FARM FIELDS MANAGEMENT
 // =====================================
 
-// READ - Get all farm fields
 export function getAllFields() {
   return JSON.parse(
     localStorage.getItem(FIELDS_STORAGE_KEY) || '[]'
   );
 }
 
-// CREATE - Add new farm field
 export function addField(name, location, size, soilType) {
   const fields = getAllFields();
 
-  const newField = {
+  fields.push({
     id: Date.now(),
     name,
     location,
     size,
     soilType,
-  };
-
-  fields.push(newField);
+  });
 
   localStorage.setItem(
     FIELDS_STORAGE_KEY,
@@ -130,38 +102,93 @@ export function addField(name, location, size, soilType) {
   );
 }
 
-// UPDATE - Edit farm field
 export function updateField(id, name, location, size, soilType) {
-  const fields = getAllFields();
-
-  const updatedFields = fields.map((field) =>
+  const updated = getAllFields().map((field) =>
     field.id === id
-      ? {
-          ...field,
-          name,
-          location,
-          size,
-          soilType,
-        }
+      ? { ...field, name, location, size, soilType }
       : field
   );
 
   localStorage.setItem(
     FIELDS_STORAGE_KEY,
-    JSON.stringify(updatedFields)
+    JSON.stringify(updated)
   );
 }
 
-// DELETE - Remove farm field
 export function deleteField(id) {
-  const fields = getAllFields();
-
-  const updatedFields = fields.filter(
+  const updated = getAllFields().filter(
     (field) => field.id !== id
   );
 
   localStorage.setItem(
     FIELDS_STORAGE_KEY,
-    JSON.stringify(updatedFields)
+    JSON.stringify(updated)
+  );
+}
+
+// =====================================
+// FARM ACTIVITIES MANAGEMENT
+// =====================================
+
+// READ
+export function getAllActivities() {
+  return JSON.parse(
+    localStorage.getItem(ACTIVITIES_STORAGE_KEY) || '[]'
+  );
+}
+
+// CREATE
+export function addActivity(name, fieldName, activityDate, description) {
+  const activities = getAllActivities();
+
+  activities.push({
+    id: Date.now(),
+    name,
+    fieldName,
+    activityDate,
+    description,
+  });
+
+  localStorage.setItem(
+    ACTIVITIES_STORAGE_KEY,
+    JSON.stringify(activities)
+  );
+}
+
+// UPDATE
+export function updateActivity(
+  id,
+  name,
+  fieldName,
+  activityDate,
+  description
+) {
+  const updated = getAllActivities().map((activity) =>
+    activity.id === id
+      ? {
+          ...activity,
+          name,
+          fieldName,
+          activityDate,
+          description,
+        }
+      : activity
+  );
+
+  localStorage.setItem(
+    ACTIVITIES_STORAGE_KEY,
+    JSON.stringify(updated)
+  );
+}
+
+// DELETE
+export function deleteActivity(id) {
+  const updated = getAllActivities().filter(
+    (activity) => activity.id !== id
+  );
+
+  localStorage.setItem(
+    ACTIVITIES_STORAGE_KEY,
+    JSON.stringify(updated)
   );
 }
