@@ -3,7 +3,6 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabaseSync('harvesthub.db');
 
-// Initialize SQLite tables
 export function initializeDatabase() {
   db.execSync(`
     CREATE TABLE IF NOT EXISTS crops (
@@ -29,17 +28,24 @@ export function initializeDatabase() {
       activityDate TEXT NOT NULL,
       description TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS harvests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      cropName TEXT NOT NULL,
+      fieldName TEXT NOT NULL,
+      harvestDate TEXT NOT NULL,
+      quantity TEXT NOT NULL,
+      notes TEXT NOT NULL
+    );
   `);
 }
 
-// =====================================
+// ==============================
 // CROPS MANAGEMENT
-// =====================================
+// ==============================
 
 export function getAllCrops() {
-  return db.getAllSync(
-    'SELECT * FROM crops ORDER BY id DESC'
-  );
+  return db.getAllSync('SELECT * FROM crops ORDER BY id DESC');
 }
 
 export function addCrop(name, type, plantingDate, quantity) {
@@ -63,14 +69,12 @@ export function deleteCrop(id) {
   );
 }
 
-// =====================================
-// FARM FIELDS MANAGEMENT
-// =====================================
+// ==============================
+// FIELDS MANAGEMENT
+// ==============================
 
 export function getAllFields() {
-  return db.getAllSync(
-    'SELECT * FROM fields ORDER BY id DESC'
-  );
+  return db.getAllSync('SELECT * FROM fields ORDER BY id DESC');
 }
 
 export function addField(name, location, size, soilType) {
@@ -94,9 +98,9 @@ export function deleteField(id) {
   );
 }
 
-// =====================================
-// FARM ACTIVITIES MANAGEMENT
-// =====================================
+// ==============================
+// ACTIVITIES MANAGEMENT
+// ==============================
 
 export function getAllActivities() {
   return db.getAllSync(
@@ -104,7 +108,12 @@ export function getAllActivities() {
   );
 }
 
-export function addActivity(name, fieldName, activityDate, description) {
+export function addActivity(
+  name,
+  fieldName,
+  activityDate,
+  description
+) {
   return db.runSync(
     'INSERT INTO activities (name, fieldName, activityDate, description) VALUES (?, ?, ?, ?)',
     [name, fieldName, activityDate, description]
@@ -127,6 +136,50 @@ export function updateActivity(
 export function deleteActivity(id) {
   return db.runSync(
     'DELETE FROM activities WHERE id = ?',
+    [id]
+  );
+}
+
+// ==============================
+// HARVEST MANAGEMENT
+// ==============================
+
+export function getAllHarvests() {
+  return db.getAllSync(
+    'SELECT * FROM harvests ORDER BY id DESC'
+  );
+}
+
+export function addHarvest(
+  cropName,
+  fieldName,
+  harvestDate,
+  quantity,
+  notes
+) {
+  return db.runSync(
+    'INSERT INTO harvests (cropName, fieldName, harvestDate, quantity, notes) VALUES (?, ?, ?, ?, ?)',
+    [cropName, fieldName, harvestDate, quantity, notes]
+  );
+}
+
+export function updateHarvest(
+  id,
+  cropName,
+  fieldName,
+  harvestDate,
+  quantity,
+  notes
+) {
+  return db.runSync(
+    'UPDATE harvests SET cropName = ?, fieldName = ?, harvestDate = ?, quantity = ?, notes = ? WHERE id = ?',
+    [cropName, fieldName, harvestDate, quantity, notes, id]
+  );
+}
+
+export function deleteHarvest(id) {
+  return db.runSync(
+    'DELETE FROM harvests WHERE id = ?',
     [id]
   );
 }

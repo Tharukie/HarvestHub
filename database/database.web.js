@@ -1,37 +1,45 @@
 
 /*
   HarvestHub Web Database
-  Storage: Browser localStorage
-  Modules: Crops, Fields, Activities
+  Browser localStorage
 */
 
-const CROPS_STORAGE_KEY = 'harvesthub_crops';
-const FIELDS_STORAGE_KEY = 'harvesthub_fields';
-const ACTIVITIES_STORAGE_KEY = 'harvesthub_activities';
+const CROPS_KEY = 'harvesthub_crops';
+const FIELDS_KEY = 'harvesthub_fields';
+const ACTIVITIES_KEY = 'harvesthub_activities';
+const HARVESTS_KEY = 'harvesthub_harvests';
 
-// Initialize storage
-export function initializeDatabase() {
-  const keys = [
-    CROPS_STORAGE_KEY,
-    FIELDS_STORAGE_KEY,
-    ACTIVITIES_STORAGE_KEY,
-  ];
-
-  keys.forEach((key) => {
-    if (localStorage.getItem(key) === null) {
-      localStorage.setItem(key, JSON.stringify([]));
-    }
-  });
+// General storage helpers
+function getRecords(key) {
+  return JSON.parse(localStorage.getItem(key) || '[]');
 }
 
-// =====================================
+function saveRecords(key, records) {
+  localStorage.setItem(key, JSON.stringify(records));
+}
+
+// Generate unique record IDs
+function newId() {
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+// Initialize database
+export function initializeDatabase() {
+  [CROPS_KEY, FIELDS_KEY, ACTIVITIES_KEY, HARVESTS_KEY].forEach(
+    (key) => {
+      if (localStorage.getItem(key) === null) {
+        saveRecords(key, []);
+      }
+    }
+  );
+}
+
+// ==============================
 // CROPS MANAGEMENT
-// =====================================
+// ==============================
 
 export function getAllCrops() {
-  return JSON.parse(
-    localStorage.getItem(CROPS_STORAGE_KEY) || '[]'
-  );
+  return getRecords(CROPS_KEY);
 }
 
 export function addCrop(name, type, plantingDate, quantity) {
@@ -45,10 +53,7 @@ export function addCrop(name, type, plantingDate, quantity) {
     quantity,
   });
 
-  localStorage.setItem(
-    CROPS_STORAGE_KEY,
-    JSON.stringify(crops)
-  );
+  saveRecords(CROPS_KEY, crops);
 }
 
 export function updateCrop(id, name, type, plantingDate, quantity) {
@@ -58,31 +63,22 @@ export function updateCrop(id, name, type, plantingDate, quantity) {
       : crop
   );
 
-  localStorage.setItem(
-    CROPS_STORAGE_KEY,
-    JSON.stringify(updated)
-  );
+  saveRecords(CROPS_KEY, updated);
 }
 
 export function deleteCrop(id) {
-  const updated = getAllCrops().filter(
-    (crop) => crop.id !== id
-  );
-
-  localStorage.setItem(
-    CROPS_STORAGE_KEY,
-    JSON.stringify(updated)
+  saveRecords(
+    CROPS_KEY,
+    getAllCrops().filter((crop) => crop.id !== id)
   );
 }
 
-// =====================================
-// FARM FIELDS MANAGEMENT
-// =====================================
+// ==============================
+// FIELDS MANAGEMENT
+// ==============================
 
 export function getAllFields() {
-  return JSON.parse(
-    localStorage.getItem(FIELDS_STORAGE_KEY) || '[]'
-  );
+  return getRecords(FIELDS_KEY);
 }
 
 export function addField(name, location, size, soilType) {
@@ -96,10 +92,7 @@ export function addField(name, location, size, soilType) {
     soilType,
   });
 
-  localStorage.setItem(
-    FIELDS_STORAGE_KEY,
-    JSON.stringify(fields)
-  );
+  saveRecords(FIELDS_KEY, fields);
 }
 
 export function updateField(id, name, location, size, soilType) {
@@ -109,36 +102,30 @@ export function updateField(id, name, location, size, soilType) {
       : field
   );
 
-  localStorage.setItem(
-    FIELDS_STORAGE_KEY,
-    JSON.stringify(updated)
-  );
+  saveRecords(FIELDS_KEY, updated);
 }
 
 export function deleteField(id) {
-  const updated = getAllFields().filter(
-    (field) => field.id !== id
-  );
-
-  localStorage.setItem(
-    FIELDS_STORAGE_KEY,
-    JSON.stringify(updated)
+  saveRecords(
+    FIELDS_KEY,
+    getAllFields().filter((field) => field.id !== id)
   );
 }
 
-// =====================================
-// FARM ACTIVITIES MANAGEMENT
-// =====================================
+// ==============================
+// ACTIVITIES MANAGEMENT
+// ==============================
 
-// READ
 export function getAllActivities() {
-  return JSON.parse(
-    localStorage.getItem(ACTIVITIES_STORAGE_KEY) || '[]'
-  );
+  return getRecords(ACTIVITIES_KEY);
 }
 
-// CREATE
-export function addActivity(name, fieldName, activityDate, description) {
+export function addActivity(
+  name,
+  fieldName,
+  activityDate,
+  description
+) {
   const activities = getAllActivities();
 
   activities.push({
@@ -149,13 +136,9 @@ export function addActivity(name, fieldName, activityDate, description) {
     description,
   });
 
-  localStorage.setItem(
-    ACTIVITIES_STORAGE_KEY,
-    JSON.stringify(activities)
-  );
+  saveRecords(ACTIVITIES_KEY, activities);
 }
 
-// UPDATE
 export function updateActivity(
   id,
   name,
@@ -175,20 +158,76 @@ export function updateActivity(
       : activity
   );
 
-  localStorage.setItem(
-    ACTIVITIES_STORAGE_KEY,
-    JSON.stringify(updated)
+  saveRecords(ACTIVITIES_KEY, updated);
+}
+
+export function deleteActivity(id) {
+  saveRecords(
+    ACTIVITIES_KEY,
+    getAllActivities().filter((activity) => activity.id !== id)
   );
 }
 
-// DELETE
-export function deleteActivity(id) {
-  const updated = getAllActivities().filter(
-    (activity) => activity.id !== id
+// ==============================
+// HARVEST MANAGEMENT
+// ==============================
+
+// READ
+export function getAllHarvests() {
+  return getRecords(HARVESTS_KEY);
+}
+
+// CREATE
+export function addHarvest(
+  cropName,
+  fieldName,
+  harvestDate,
+  quantity,
+  notes
+) {
+  const harvests = getAllHarvests();
+
+  harvests.push({
+    id: newId(),
+    cropName,
+    fieldName,
+    harvestDate,
+    quantity,
+    notes,
+  });
+
+  saveRecords(HARVESTS_KEY, harvests);
+}
+
+// UPDATE
+export function updateHarvest(
+  id,
+  cropName,
+  fieldName,
+  harvestDate,
+  quantity,
+  notes
+) {
+  const updated = getAllHarvests().map((harvest) =>
+    harvest.id === id
+      ? {
+          ...harvest,
+          cropName,
+          fieldName,
+          harvestDate,
+          quantity,
+          notes,
+        }
+      : harvest
   );
 
-  localStorage.setItem(
-    ACTIVITIES_STORAGE_KEY,
-    JSON.stringify(updated)
+  saveRecords(HARVESTS_KEY, updated);
+}
+
+// DELETE
+export function deleteHarvest(id) {
+  saveRecords(
+    HARVESTS_KEY,
+    getAllHarvests().filter((harvest) => harvest.id !== id)
   );
 }
