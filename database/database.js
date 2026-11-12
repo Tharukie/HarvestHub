@@ -20,4 +20,10 @@ export {
   updateActivity,
   deleteActivity,
 
+  // Harvests
+  getAllHarvests,
+  addHarvest,
+  updateHarvest,
+  deleteHarvest,
+
 } from './database.web';
