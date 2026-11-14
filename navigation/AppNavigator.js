@@ -1,8 +1,18 @@
 
 import React from 'react';
-import { Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import {
+  Text,
+  Platform,
+} from 'react-native';
+
+import {
+  NavigationContainer,
+} from '@react-navigation/native';
+
+import {
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 
 import HomeScreen from '../screens/HomeScreen';
 import CropsScreen from '../screens/CropsScreen';
@@ -18,15 +28,30 @@ export default function AppNavigator() {
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
+
           tabBarActiveTintColor: '#1B5E20',
-          tabBarInactiveTintColor: '#888',
+          tabBarInactiveTintColor: '#888888',
+
           tabBarStyle: {
-            height: 65,
-            paddingBottom: 8,
-            paddingTop: 5,
+            backgroundColor: '#FFFFFF',
+            borderTopColor: '#E0E0E0',
+            borderTopWidth: 1,
+
+            // Extra room for Android system navigation
+            height: Platform.OS === 'android' ? 90 : 65,
+
+            paddingTop: 8,
+            paddingBottom:
+              Platform.OS === 'android' ? 30 : 8,
           },
+
           tabBarLabelStyle: {
             fontSize: 11,
+            fontWeight: '600',
+          },
+
+          tabBarIconStyle: {
+            marginBottom: 2,
           },
         }}
       >
@@ -34,7 +59,9 @@ export default function AppNavigator() {
           name="Home"
           component={HomeScreen}
           options={{
-            tabBarIcon: () => <Text>🏠</Text>,
+            tabBarIcon: () => (
+              <Text style={{ fontSize: 21 }}>🏠</Text>
+            ),
           }}
         />
 
@@ -42,7 +69,9 @@ export default function AppNavigator() {
           name="Crops"
           component={CropsScreen}
           options={{
-            tabBarIcon: () => <Text>🌾</Text>,
+            tabBarIcon: () => (
+              <Text style={{ fontSize: 21 }}>🌾</Text>
+            ),
           }}
         />
 
@@ -50,7 +79,9 @@ export default function AppNavigator() {
           name="Fields"
           component={FieldsScreen}
           options={{
-            tabBarIcon: () => <Text>🚜</Text>,
+            tabBarIcon: () => (
+              <Text style={{ fontSize: 21 }}>🚜</Text>
+            ),
           }}
         />
 
@@ -58,7 +89,9 @@ export default function AppNavigator() {
           name="Activities"
           component={ActivitiesScreen}
           options={{
-            tabBarIcon: () => <Text>📅</Text>,
+            tabBarIcon: () => (
+              <Text style={{ fontSize: 21 }}>📅</Text>
+            ),
           }}
         />
 
@@ -66,7 +99,9 @@ export default function AppNavigator() {
           name="Harvest"
           component={HarvestScreen}
           options={{
-            tabBarIcon: () => <Text>📦</Text>,
+            tabBarIcon: () => (
+              <Text style={{ fontSize: 21 }}>📦</Text>
+            ),
           }}
         />
       </Tab.Navigator>
