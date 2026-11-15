@@ -139,22 +139,69 @@ These screenshots demonstrate the input controls implemented in the Android appl
 
 ## 🌐 Web Browser Application Screenshots
 
-The Web version is tested separately from Android. **Web screenshots have not yet been added to this README.** Capture the following screens from the running application and save them under `screenshots/web/`:
+The following screenshots document HarvestHub running in a Web browser, including its main management screens, date/time pickers, dropdown controls, and record-operation alerts.
 
-| Screen | Suggested filename |
+### Home Dashboard
+
+| Dashboard view 1 | Dashboard view 2 |
 | --- | --- |
-| Home Dashboard | `01-home.png` |
-| Crop Management | `02-crops.png` |
-| Field Management | `03-fields.png` |
-| Activity Management | `04-activities.png` |
-| Harvest Management | `05-harvest.png` |
-| Smart Farm Assistant | `06-smart-assistant.png` |
-| Date/time picker (if supported on Web) | `07-date-picker.png` |
-| Dropdown selection | `08-dropdown.png` |
-| Numeric input | `09-numeric-input.png` |
+| ![Web Dashboard view 1](screenshots/web/Home1.png) | ![Web Dashboard view 2](screenshots/web/Home2.png) |
 
-> After capturing the Web images, replace this checklist with image tables using their **actual filenames and extensions**. Do not rename a `.jpeg` file to `.png` without converting its format.
+### Crop Management
 
+| Crop screen 1 | Crop screen 2 |
+| --- | --- |
+| ![Web Crop screen 1](screenshots/web/Crops1.png) | ![Web Crop screen 2](screenshots/web/Crops2.png) |
+
+### Field Management
+
+| Field screen 1 | Field screen 2 |
+| --- | --- |
+| ![Web Field screen 1](screenshots/web/Fields1.png) | ![Web Field screen 2](screenshots/web/Fields2.png) |
+
+### Activity Management
+
+| Activity screen 1 | Activity screen 2 |
+| --- | --- |
+| ![Web Activity screen 1](screenshots/web/Activities1.png) | ![Web Activity screen 2](screenshots/web/Activities2.png) |
+
+### Harvest Management
+
+| Harvest screen 1 | Harvest screen 2 |
+| --- | --- |
+| ![Web Harvest screen 1](screenshots/web/Harvest1.png) | ![Web Harvest screen 2](screenshots/web/Harvest2.png) |
+
+### Date/Time Picker Inputs
+
+| Crop date/time picker | Activity date/time picker | Harvest date/time picker |
+| --- | --- | --- |
+| ![Web Crop date/time picker](screenshots/web/Crops%20DateTimePiccker.png) | ![Web Activity date/time picker](screenshots/web/Activities%20DateTime%20Picker.png) | ![Web Harvest date/time picker](screenshots/web/Harvest%20DateTime%20Picker.png) |
+
+### Dropdown Inputs – Crops and Activities
+
+| Crop dropdown | Activity dropdown 1 | Activity dropdown 2 |
+| --- | --- | --- |
+| ![Web Crop dropdown](screenshots/web/Crops%20DropDown.png) | ![Web Activity dropdown 1](screenshots/web/Activities%20DropDown1.png) | ![Web Activity dropdown 2](screenshots/web/Activities%20DropDown2.png) |
+
+### Dropdown Inputs – Fields
+
+| Field dropdown 1 | Field dropdown 2 |
+| --- | --- |
+| ![Web Field dropdown 1](screenshots/web/FieldsDropDown1.png) | ![Web Field dropdown 2](screenshots/web/FieldsDropDown2.png) |
+
+### Dropdown Inputs – Harvest
+
+| Harvest dropdown 1 | Harvest dropdown 2 |
+| --- | --- |
+| ![Web Harvest dropdown 1](screenshots/web/Harvest%20DropDown1.png) | ![Web Harvest dropdown 2](screenshots/web/Harvest%20DropDown2.png) |
+
+### CRUD Operation Alerts
+
+| Add record alert | Update record alert | Delete record alert |
+| --- | --- | --- |
+| ![Web Add record alert](screenshots/web/Adding%20alert.png) | ![Web Update record alert](screenshots/web/Update%20alert.png) | ![Web Delete record alert](screenshots/web/Delete%20Alert.png) |
+
+The Web screenshots supplied here do not include a Smart Farm Decision Assistant view or a dedicated numeric-input screenshot. The Android Smart Farm Decision Assistant screenshots remain available in the Android section above.
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -255,7 +302,7 @@ HarvestHub/
 │   └── ANDROID_INTEGRATION.md
 └── screenshots/
     ├── android/                 # 23 captured Android JPEG screenshots
-    └── web/                     # Add browser screenshots here
+    └── web/                     # 23 captured Web PNG screenshots
 ```
 
 This tree highlights the main project files and omits generated folders such as `node_modules` and `.expo`.
